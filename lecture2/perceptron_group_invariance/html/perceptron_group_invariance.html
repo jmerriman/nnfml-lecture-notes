@@ -1,0 +1,303 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
+  "http://www.w3.org/TR/html4/loose.dtd">  
+<html > 
+<head><title>Minsky and Papert&#8217;s Group Invariance Theorem
+Notes for Geoffrey Hinton&#8217;s Neural Networks for Machine Learning
+Lecture 2e</title> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+<meta name="generator" content="TeX4ht (http://www.tug.org/tex4ht/)"> 
+<meta name="originator" content="TeX4ht (http://www.tug.org/tex4ht/)"> 
+<!-- html --> 
+<meta name="src" content="perceptron_group_invariance.tex"> 
+<link rel="stylesheet" type="text/css" href="perceptron_group_invariance.css"> 
+</head><body 
+>
+<div class="maketitle">
+
+
+
+<h2 class="titleHead">Minsky and Papert&#8217;s Group Invariance Theorem<br />
+Notes for Geoffrey Hinton&#8217;s Neural Networks for Machine Learning<br />
+Lecture 2e</h2>
+<div class="author" ><span 
+class="cmr-12">Jonathan Merriman</span></div>
+<br />
+<div class="date" ><span 
+class="cmr-12">April 12, 2017</span></div>
+</div>
+<!--l. 26--><p class="noindent" >Here we will consider a simplified example of the pattern recognition problem presented in the
+Lecture 2e slides, which is adapted from Minsky and Papert&#8217;s XOR example in the second chapter
+of <span 
+class="cmti-10x-x-109">Perceptrons </span><span class="cite">[<a 
+href="#XDBLP:books/daglib/0066902">2</a>]</span>. This simplified example considers images with only four pixels, denoted <span 
+class="cmmi-10x-x-109">x</span><sub><span 
+class="cmr-8">1</span></sub>
+through <span 
+class="cmmi-10x-x-109">x</span><sub><span 
+class="cmr-8">4</span></sub>. Each <span 
+class="cmmi-10x-x-109">x </span>has a value 1 if the pixel is on and 0 if it is off. The image is completely
+defined by the tuple (<span 
+class="cmmi-10x-x-109">x</span><sub><span 
+class="cmr-8">1</span></sub><span 
+class="cmmi-10x-x-109">,x</span><sub><span 
+class="cmr-8">2</span></sub><span 
+class="cmmi-10x-x-109">,x</span><sub><span 
+class="cmr-8">3</span></sub><span 
+class="cmmi-10x-x-109">,x</span><sub><span 
+class="cmr-8">4</span></sub>).
+<h3 class="likesectionHead"><a 
+ id="x1-1000"></a>Group Transformations</h3>
+<!--l. 30--><p class="noindent" >Define a transformation <span 
+class="cmmi-10x-x-109">T </span>that shifts all of the pixels one step to the right:
+<!--l. 32--><p class="noindent" >
+<center class="math-display" >
+<img 
+src="perceptron_group_invariance0x.png" alt="T(a,b,c,d) = (d,a,b,c)
+" class="math-display" ></center>
+<!--l. 34--><p class="noindent" >The transformation <span 
+class="cmmi-10x-x-109">T </span>can be repeated to form new transformations:
+<!--l. 36--><p class="noindent" >
+
+<center class="math-display" >
+<img 
+src="perceptron_group_invariance1x.png" alt="T(T(a,b,c,d)) = (T &#x22C5;T )(a,b,c,d) = T2(a,b,c,d) = (c,d,a,b)
+" class="math-display" ></center>
+<!--l. 38--><p class="noindent" >Repeated application of <span 
+class="cmmi-10x-x-109">T </span>yields the original pattern:
+<!--l. 40--><p class="noindent" >
+<center class="math-display" >
+<img 
+src="perceptron_group_invariance2x.png" alt="  4            0
+T  (a,b,c,d) = T (a,b,c,d) = (a,b,c,d)
+" class="math-display" ></center>
+<!--l. 42--><p class="noindent" >This transformation has an inverse:
+<!--l. 44--><p class="noindent" >
+<center class="math-display" >
+<img 
+src="perceptron_group_invariance3x.png" alt=" -1             3
+T  (a,b,c,d) = T (a,b,c,d ) = (b,c,d,a)
+" class="math-display" ></center>
+<!--l. 46--><p class="noindent" >These properties characterize a mathematical structure known as a <span 
+class="cmti-10x-x-109">group</span>. A group
+consists of a set <span 
+class="cmmi-10x-x-109">G </span>augmented with a binary operation <span 
+class="cmsy-10x-x-109">&#x22C5; </span>that satisfies the following
+axioms:
+<!--l. 49--><p class="noindent" >
+     <ol  class="enumerate1" >
+     <li 
+  class="enumerate" id="x1-1002x1">The set is closed under the operation <span 
+class="cmsy-10x-x-109">&#x22C5;</span>:<br 
+class="newline" /><span 
+class="cmsy-10x-x-109">&#x2200;</span><span 
+class="cmmi-10x-x-109">a,b </span><span 
+class="cmsy-10x-x-109">&#x2208; </span><span 
+class="cmmi-10x-x-109">G</span><span 
+class="cmmi-10x-x-109">&#x00A0;.</span><span 
+class="cmmi-10x-x-109">&#x00A0;a </span><span 
+class="cmsy-10x-x-109">&#x22C5; </span><span 
+class="cmmi-10x-x-109">b </span><span 
+class="cmsy-10x-x-109">&#x2208; </span><span 
+class="cmmi-10x-x-109">G</span>.
+     </li>
+     <li 
+  class="enumerate" id="x1-1004x2">The operation <span 
+class="cmsy-10x-x-109">&#x22C5; </span>is associative:<br 
+class="newline" /><span 
+class="cmsy-10x-x-109">&#x2200;</span><span 
+class="cmmi-10x-x-109">a,b,c </span><span 
+class="cmsy-10x-x-109">&#x2208; </span><span 
+class="cmmi-10x-x-109">G </span>. <span 
+class="cmmi-10x-x-109">a </span><span 
+class="cmsy-10x-x-109">&#x22C5; </span>(<span 
+class="cmmi-10x-x-109">b </span><span 
+class="cmsy-10x-x-109">&#x22C5; </span><span 
+class="cmmi-10x-x-109">c</span>) = (<span 
+class="cmmi-10x-x-109">a </span><span 
+class="cmsy-10x-x-109">&#x22C5; </span><span 
+class="cmmi-10x-x-109">b</span>) <span 
+class="cmsy-10x-x-109">&#x22C5; </span><span 
+class="cmmi-10x-x-109">c</span>.
+     </li>
+     <li 
+  class="enumerate" id="x1-1006x3">The set has an identity element <span 
+class="cmmi-10x-x-109">e</span>:<br 
+class="newline" /><span 
+class="cmsy-10x-x-109">&#x2200;</span><span 
+class="cmmi-10x-x-109">a </span><span 
+class="cmsy-10x-x-109">&#x2208; </span><span 
+class="cmmi-10x-x-109">G</span><span 
+class="cmmi-10x-x-109">&#x00A0;.</span><span 
+class="cmmi-10x-x-109">&#x00A0;</span><span 
+class="cmsy-10x-x-109">&#x2203;</span><span 
+class="cmmi-10x-x-109">e</span><span 
+class="cmmi-10x-x-109">&#x00A0;.</span><span 
+class="cmmi-10x-x-109">&#x00A0;a </span><span 
+class="cmsy-10x-x-109">&#x22C5; </span><span 
+class="cmmi-10x-x-109">e </span>= <span 
+class="cmmi-10x-x-109">e </span><span 
+class="cmsy-10x-x-109">&#x22C5; </span><span 
+class="cmmi-10x-x-109">a </span>= <span 
+class="cmmi-10x-x-109">a</span>.
+     </li>
+     <li 
+  class="enumerate" id="x1-1008x4">Each element in the set has an inverse:<br 
+class="newline" /><span 
+class="cmsy-10x-x-109">&#x2200;</span><span 
+class="cmmi-10x-x-109">a </span><span 
+class="cmsy-10x-x-109">&#x2208; </span><span 
+class="cmmi-10x-x-109">G</span><span 
+class="cmmi-10x-x-109">&#x00A0;.</span><span 
+class="cmmi-10x-x-109">&#x00A0;</span><span 
+class="cmsy-10x-x-109">&#x2203;</span><span 
+class="cmmi-10x-x-109">a</span><sup><span 
+class="cmsy-8">-</span><span 
+class="cmr-8">1</span></sup><span 
+class="cmmi-10x-x-109">&#x00A0;.</span><span 
+class="cmmi-10x-x-109">&#x00A0;a </span><span 
+class="cmsy-10x-x-109">&#x22C5; </span><span 
+class="cmmi-10x-x-109">a</span><sup><span 
+class="cmsy-8">-</span><span 
+class="cmr-8">1</span></sup> = <span 
+class="cmmi-10x-x-109">e</span>.</li></ol>
+<!--l. 57--><p class="noindent" >The set of transformations <span 
+class="cmsy-10x-x-109">{</span><span 
+class="cmmi-10x-x-109">T</span><sup><span 
+class="cmr-8">0</span></sup><span 
+class="cmmi-10x-x-109">,T</span><sup><span 
+class="cmr-8">1</span></sup><span 
+class="cmmi-10x-x-109">,T</span><sup><span 
+class="cmr-8">2</span></sup><span 
+class="cmmi-10x-x-109">,T</span><sup><span 
+class="cmr-8">3</span></sup><span 
+class="cmsy-10x-x-109">} </span>forms a group when paired with function
+composition.
+<!--l. 59--><p class="noindent" >
+<h3 class="likesectionHead"><a 
+ id="x1-2000"></a>Group Invariance Theorem</h3>
+<!--l. 61--><p class="noindent" >A Perceptron defined on the space of four-pixel images assigns a weight to each pixel and outputs
+a 1 if the sum of each weighted pixel is above a threshold. We will use weights <span 
+class="cmmi-10x-x-109">&#x03B1;,&#x03B2;,&#x03B3;,&#x03B4; </span>and
+threshold <span 
+class="cmmi-10x-x-109">&#x03B8; </span>to define the decision function:
+<table 
+class="equation"><tr><td><a 
+ id="x1-2001r1"></a>
+<center class="math-display" >
+<img 
+src="perceptron_group_invariance4x.png" alt="        {
+&#x03A8; (X ) =  1  if &#x03B1;x1 + &#x03B2;x2 + &#x03B3;x3 + &#x03B4;x4 &#x003E; 0
+          0  otherwise
+" class="math-display" ></center></td><td class="equation-label">(1)</td></tr></table>
+<!--l. 68--><p class="nopar" >
+<!--l. 70--><p class="noindent" >Minsky and Papert&#8217;s <span 
+class="cmti-10x-x-109">Group Invariance Theorem </span>is concerned with recognizing patterns that are
+invariant under a group transformation. For a pattern to be invariant under the group of
+transformations generated by <span 
+class="cmmi-10x-x-109">T</span>, &#x03A8;(<span 
+class="cmmi-10x-x-109">X</span>) = &#x03A8;(<span 
+class="cmmi-10x-x-109">T</span><sup><span 
+class="cmmi-8">n</span></sup>(<span 
+class="cmmi-10x-x-109">X</span>)) for <span 
+class="cmmi-10x-x-109">n </span><span 
+class="cmsy-10x-x-109">&#x2208;</span> 0<span 
+class="cmmi-10x-x-109">,</span>1<span 
+class="cmmi-10x-x-109">,</span>2<span 
+class="cmmi-10x-x-109">,</span>3. A solution that correctly
+classifies a given pattern must therefore satisfy four inequalities corresponding to the four distinct
+
+transformations generated by <span 
+class="cmmi-10x-x-109">T</span>:
+<table 
+class="equation"><tr><td><a 
+ id="x1-2002r2"></a>
+<center class="math-display" >
+<img 
+src="perceptron_group_invariance5x.png" alt="&#x03B1;x  + &#x03B2;x  + &#x03B3;x +  &#x03B4;x &#x003E; &#x03B8;
+  1     2     3     4
+&#x03B1;x4 + &#x03B2;x1 + &#x03B3;x2 + &#x03B4;x3 &#x003E; &#x03B8;
+&#x03B1;x3 + &#x03B2;x4 + &#x03B3;x1 + &#x03B4;x2 &#x003E; &#x03B8;
+
+&#x03B1;x2 + &#x03B2;x3 + &#x03B3;x4 + &#x03B4;x1 &#x003E; &#x03B8;
+" class="math-display" ></center></td><td class="equation-label">(2)</td></tr></table>
+<!--l. 79--><p class="nopar" >
+<!--l. 81--><p class="noindent" >These can be reduced to a single inequality:
+<table 
+class="equation-star"><tr><td>
+<center class="math-display" >
+<img 
+src="perceptron_group_invariance6x.png" alt="  &#x03B1;(x + x  + x  + x )+ &#x03B2;(x  + x +  x + x )
+     1    2   3    4      1    2    3   4
++ &#x03B3;(x1 + x2 + x3 + x4)+ &#x03B4;(x1 + x2 + x3 + x4) &#x003E; 4&#x03B8;
+" class="math-display" ></center></td></tr></table>
+<!--l. 88--><p class="nopar" >
+<!--l. 90--><p class="noindent" >Letting <span 
+class="cmmi-10x-x-109">&#x03C3; </span>= <img 
+src="perceptron_group_invariance7x.png" alt="14"  class="frac" align="middle">(<span 
+class="cmmi-10x-x-109">&#x03B1; </span>+ <span 
+class="cmmi-10x-x-109">&#x03B2; </span>+ <span 
+class="cmmi-10x-x-109">&#x03B3; </span>+ <span 
+class="cmmi-10x-x-109">&#x03B4;</span>) this can further simplified to:
+<table 
+class="equation"><tr><td><a 
+ id="x1-2003r3"></a>
+<center class="math-display" >
+<img 
+src="perceptron_group_invariance8x.png" alt="&#x03C3;(x1 + x2 + x3 + x4) &#x003E; &#x03B8;
+" class="math-display" ></center></td><td class="equation-label">(3)</td></tr></table>
+<!--l. 95--><p class="nopar" >
+<!--l. 97--><p class="noindent" ><span 
+class="cmti-10x-x-109">This is where we get into trouble! </span>Let&#8217;s say we want to distinguish between two patterns that
+have exactly two pixels inked. Specifically, let&#8217;s call the images that can be generated
+from the transformation <span 
+class="cmmi-10x-x-109">T </span>on the prototype (1<span 
+class="cmmi-10x-x-109">,</span>0<span 
+class="cmmi-10x-x-109">,</span>1<span 
+class="cmmi-10x-x-109">,</span>0) examples of Pattern A and
+those from the prototype (1<span 
+class="cmmi-10x-x-109">,</span>1<span 
+class="cmmi-10x-x-109">,</span>0<span 
+class="cmmi-10x-x-109">,</span>0) Pattern B. There are <img 
+src="perceptron_group_invariance9x.png" alt="(4)
+ 2" > = 6 possible ways to ink
+exactly two pixels; two of which are instances of Pattern A and four are of Pattern
+B.
+<!--l. 99--><p class="noindent" >Equation <a 
+href="#x1-2003r3">3<!--tex4ht:ref: eq:2 --></a> says that if a pattern is invariant under a group transformation, then we must be
+able to replace the individual weights with a shared weight <span 
+class="cmmi-10x-x-109">&#x03C3;</span>. It&#8217;s obvious that this
+would make the sums of the input from both Pattern A and Pattern B equal. Moreover,
+any images with more than <img 
+src="perceptron_group_invariance10x.png" alt="&#x2308;  &#x2309;
+  &#x03B8;&#x03C3;"  class="left" align="middle"> pixels inked would unavoidably evaluate to the same
+result.
+<!--l. 101--><p class="noindent" >Refer to <span 
+class="cmsy-10x-x-109">§</span>2.3 of <span 
+class="cmti-10x-x-109">Perceptrons </span>for the formal definition of the Group Invariance Theorem. The proof
+proceeds in a similar fashion to the example above but obviously is generalized to any finite
+group.
+<!--l. 1--><p class="noindent" >
+<h3 class="likesectionHead"><a 
+ id="x1-3000"></a>References</h3>
+<!--l. 1--><p class="noindent" >
+   <div class="thebibliography">
+   <p class="bibitem" ><span class="biblabel">
+ [1]<span class="bibsp">&#x00A0;&#x00A0;&#x00A0;</span></span><a 
+ id="Xnnfml-lecture2"></a>Hinton, Geoffrey, et&#x00A0;al.  &#8220;Lecture 2: What perceptrons can&#8217;t do.&#8221; <span 
+class="cmti-10x-x-109">Neural Networks</span>
+   <span 
+class="cmti-10x-x-109">for Machine Learning </span>Coursera.
+   </p>
+   <p class="bibitem" ><span class="biblabel">
+ [2]<span class="bibsp">&#x00A0;&#x00A0;&#x00A0;</span></span><a 
+ id="XDBLP:books/daglib/0066902"></a>Minsky, Marvin and Seymour Papert. <span 
+class="cmti-10x-x-109">Perceptrons - an introduction to computational</span>
+   <span 
+class="cmti-10x-x-109">geometry</span>. MIT Press, 1987.
+</p>
+   </div>
+ 
+</body></html> 
+
+
+
